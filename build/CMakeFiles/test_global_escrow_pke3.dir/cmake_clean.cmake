@@ -1,6 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test_global_escrow_pke3.dir/test/test_global_escrow_pke3.cpp.o"
-  "test_global_escrow_pke3"
+  "CMakeFiles/test_global_escrow_pke3.dir/test/test_global_escrow_pke3.cpp.obj"
+  "CMakeFiles/test_global_escrow_pke3.dir/test/test_global_escrow_pke3.cpp.obj.d"
+  "libtest_global_escrow_pke3.dll.a"
+  "test_global_escrow_pke3.exe"
+  "test_global_escrow_pke3.exe.manifest"
   "test_global_escrow_pke3.pdb"
 )
 

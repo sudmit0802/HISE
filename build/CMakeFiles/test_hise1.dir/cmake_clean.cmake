@@ -1,6 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test_hise1.dir/test/test_hise1.cpp.o"
-  "test_hise1"
+  "CMakeFiles/test_hise1.dir/test/test_hise1.cpp.obj"
+  "CMakeFiles/test_hise1.dir/test/test_hise1.cpp.obj.d"
+  "libtest_hise1.dll.a"
+  "test_hise1.exe"
+  "test_hise1.exe.manifest"
   "test_hise1.pdb"
 )
 

@@ -1,6 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test_global_escrow_hise2.dir/test/test_global_escrow_hise2.cpp.o"
-  "test_global_escrow_hise2"
+  "CMakeFiles/test_global_escrow_hise2.dir/test/test_global_escrow_hise2.cpp.obj"
+  "CMakeFiles/test_global_escrow_hise2.dir/test/test_global_escrow_hise2.cpp.obj.d"
+  "libtest_global_escrow_hise2.dll.a"
+  "test_global_escrow_hise2.exe"
+  "test_global_escrow_hise2.exe.manifest"
   "test_global_escrow_hise2.pdb"
 )
 

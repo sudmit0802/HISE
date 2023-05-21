@@ -1,6 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/test_boneh_boyen.dir/test/test_boneh_boyen.cpp.o"
-  "test_boneh_boyen"
+  "CMakeFiles/test_boneh_boyen.dir/test/test_boneh_boyen.cpp.obj"
+  "CMakeFiles/test_boneh_boyen.dir/test/test_boneh_boyen.cpp.obj.d"
+  "libtest_boneh_boyen.dll.a"
+  "test_boneh_boyen.exe"
+  "test_boneh_boyen.exe.manifest"
   "test_boneh_boyen.pdb"
 )
 

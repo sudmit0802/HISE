@@ -1,0 +1,141 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.2"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "HISE",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "test_boneh_boyen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_boneh_boyen-Debug-998b44054598d99439e3.json",
+					"name" : "test_boneh_boyen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_elgamal_pke::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_elgamal_pke-Debug-933bdcfb1983071de75f.json",
+					"name" : "test_elgamal_pke",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_global_escrow_hise1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_global_escrow_hise1-Debug-350c4bb4955126da7d7f.json",
+					"name" : "test_global_escrow_hise1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_global_escrow_hise2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_global_escrow_hise2-Debug-98cb2e27f788af002492.json",
+					"name" : "test_global_escrow_hise2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_global_escrow_pke1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_global_escrow_pke1-Debug-a2e52e76159dba0f028f.json",
+					"name" : "test_global_escrow_pke1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_global_escrow_pke3::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_global_escrow_pke3-Debug-2305511cc0055327ba09.json",
+					"name" : "test_global_escrow_pke3",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_hies::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_hies-Debug-14cfc0f1d6029163cf28.json",
+					"name" : "test_hies",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_hise1::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_hise1-Debug-752e39f24f1ca6664807.json",
+					"name" : "test_hise1",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_hise2::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_hise2-Debug-51ea93d338f73a11809b.json",
+					"name" : "test_hise2",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "test_schnorr_sig::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-test_schnorr_sig-Debug-e0db81c88ca2af16c332.json",
+					"name" : "test_schnorr_sig",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+		"source" : "C:/Users/sudmi/Desktop/kmzi/HISE"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 5
+	}
+}

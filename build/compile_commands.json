@@ -1,0 +1,62 @@
+[
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_hise1.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_hise1.dir\\test\\test_hise1.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_hise1.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_hise1.cpp",
+  "output": "CMakeFiles/test_hise1.dir/test/test_hise1.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_hise2.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_hise2.dir\\test\\test_hise2.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_hise2.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_hise2.cpp",
+  "output": "CMakeFiles/test_hise2.dir/test/test_hise2.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_global_escrow_hise1.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_global_escrow_hise1.dir\\test\\test_global_escrow_hise1.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_global_escrow_hise1.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_global_escrow_hise1.cpp",
+  "output": "CMakeFiles/test_global_escrow_hise1.dir/test/test_global_escrow_hise1.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_global_escrow_hise2.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_global_escrow_hise2.dir\\test\\test_global_escrow_hise2.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_global_escrow_hise2.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_global_escrow_hise2.cpp",
+  "output": "CMakeFiles/test_global_escrow_hise2.dir/test/test_global_escrow_hise2.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_elgamal_pke.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_elgamal_pke.dir\\test\\test_elgamal_pke.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_elgamal_pke.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_elgamal_pke.cpp",
+  "output": "CMakeFiles/test_elgamal_pke.dir/test/test_elgamal_pke.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_schnorr_sig.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_schnorr_sig.dir\\test\\test_schnorr_sig.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_schnorr_sig.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_schnorr_sig.cpp",
+  "output": "CMakeFiles/test_schnorr_sig.dir/test/test_schnorr_sig.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_global_escrow_pke1.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_global_escrow_pke1.dir\\test\\test_global_escrow_pke1.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_global_escrow_pke1.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_global_escrow_pke1.cpp",
+  "output": "CMakeFiles/test_global_escrow_pke1.dir/test/test_global_escrow_pke1.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_global_escrow_pke3.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_global_escrow_pke3.dir\\test\\test_global_escrow_pke3.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_global_escrow_pke3.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_global_escrow_pke3.cpp",
+  "output": "CMakeFiles/test_global_escrow_pke3.dir/test/test_global_escrow_pke3.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_boneh_boyen.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_boneh_boyen.dir\\test\\test_boneh_boyen.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_boneh_boyen.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_boneh_boyen.cpp",
+  "output": "CMakeFiles/test_boneh_boyen.dir/test/test_boneh_boyen.cpp.obj"
+},
+{
+  "directory": "C:/Users/sudmi/Desktop/kmzi/HISE/build",
+  "command": "C:\\MinGW\\bin\\g++.exe  @CMakeFiles/test_hies.dir/includes_CXX.rsp  -std=c++11 -pthread -O3 -g -o CMakeFiles\\test_hies.dir\\test\\test_hies.cpp.obj -c C:\\Users\\sudmi\\Desktop\\kmzi\\HISE\\test\\test_hies.cpp",
+  "file": "C:/Users/sudmi/Desktop/kmzi/HISE/test/test_hies.cpp",
+  "output": "CMakeFiles/test_hies.dir/test/test_hies.cpp.obj"
+}
+]
