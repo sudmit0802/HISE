@@ -1,15 +1,13 @@
-/****************************************************************************
-this hpp implements global escrow HISE1 (HISE1 + twisted Naor-Yung paradigm)
-*****************************************************************************
-* @author     Yu Chen
-* @paper      HISE
-* @copyright  MIT license (see LICENSE file)
-*****************************************************************************/
+
+#ifndef GLOBAL_ESCROW_HISE_1_HPP
+#define GLOBAL_ESCROW_HISE_1_HPP
 
 #include <mcl/bls12_381.hpp>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include <stack>
+#include <math.h>
 
 using namespace mcl::bls12;
 
@@ -117,8 +115,88 @@ struct Global_Escrow_HISE_CT
 	GT Y2; // raw ciphertext 
 	G1 A1; 
 	GT A2; 
-	Fr z;    // consistency proof
+	Fr z;  // consistency proof
 };
+
+
+std::string decimalToBinary(int num, int leadZero) {
+    std::stack<std::string> binaryStack;
+    while (num!=0) {
+        binaryStack.push(std::to_string(num%2));
+        num/=2;
+    }
+	std::string returnVal = "";
+    int loop = binaryStack.size();
+
+    if (leadZero>0) {
+        for (int i = 0; i < leadZero-loop; i++) {
+            returnVal+="0";
+        }
+    }
+
+    for (int i = 0; i < loop; i++) {
+        returnVal+=binaryStack.top();
+        binaryStack.pop();
+    }
+    return returnVal;
+}
+
+std::string asciiToBinary(std::string &str) {
+    std::string returnVal = "";
+    for (int i = 0; i < str.length(); i++) {
+        int charCode = int(str[i]);
+        returnVal+=decimalToBinary(charCode, 8);
+    }
+    return returnVal;
+}
+
+int binaryToDecimal(std::string &str) {
+    int charCode = 0;
+    int val = pow(2, str.length()-1);
+    for (int j = 0; j < str.length(); j++) {
+        charCode+=(val*(str[j]-'0'));
+        val/=2;
+    }
+    return charCode;
+}
+
+std::string binaryToAscii(std::string &str) {    
+    std::string returnVal = "";
+
+    if (str.length()<8) {
+        return "Insufficient characters";
+    }
+    for (int i = 0; i < str.length(); i++) {
+        if (str[i]!='0'&&str[i]!='1') {
+            return "Invalid character(s)"; 
+        }
+    }
+
+    std::string tmp = "";
+    for (int i = 0; i < str.length()/8; i++) {
+		std::string arg_str = str.substr(8*i, 8);
+		char character = binaryToDecimal(arg_str);
+        if (character>126||character<32) {
+            continue;
+        }
+        tmp+=character;
+    }
+    returnVal+=tmp;
+    
+    return returnVal;
+}
+
+std::vector<std::string> split(const std::string& str, char delimiter) {
+    std::vector<std::string> tokens;
+    std::istringstream iss(str);
+    std::string token;
+
+    while (std::getline(iss, token, delimiter)) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
+}
 
 void Global_Escrow_HISE_Setup(Global_Escrow_HISE_PP& pp, G2& esk)
 {
@@ -187,7 +265,6 @@ void Global_Escrow_HISE_Encrypt(const Global_Escrow_HISE_PP& pp, const G1& pk, c
 
 	GT::mul(ct.Y1, k1, pt);       // Y1 = k1 \cdot m
 	GT::mul(ct.Y2, k2, pt);       // Y2 = k2 \cdot m
-
 	DDH_Instance instance; 
 	instance.g = pp.g1; 
 	instance.X = ct.X; 
@@ -298,7 +375,7 @@ void Global_Escrow_HISE_Sign(const Fr& sk, const std::string& msg, G2& sig)
 	G2::mul(sig, hash_msg, sk); // sig = hash_msg^sk
 }
 
-void Global_Escrow_HISE_Verify(const Global_Escrow_HISE_PP& pp, const G1& pk, const std::string& msg, G2& sig)
+bool Global_Escrow_HISE_Verify(const Global_Escrow_HISE_PP& pp, const G1& pk, const std::string& msg, G2& sig)
 {
 	Fp12 LEFT, RIGHT; 
 	G2 hash_msg; 
@@ -307,13 +384,15 @@ void Global_Escrow_HISE_Verify(const Global_Escrow_HISE_PP& pp, const G1& pk, co
 	pairing(LEFT, pk, hash_msg); 
 	pairing(RIGHT, pp.g1, sig); 
 
-	#ifdef DEBUG 	
+		
 	if (LEFT == RIGHT){
-		std::cout << "signature is valid" << std::endl;  
+		return true; 
 	}
 	else{
-		std::cout << "signature is invalid" << std::endl; 
+		return false; 
 	}
-	#endif
+	
 }
+
+#endif
 
