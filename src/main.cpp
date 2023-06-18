@@ -146,6 +146,11 @@ void test_5()
     auto private_key = std::get<1>(keys);
     std::cout << "A COMMONER's keypair is generated!" << std::endl;
 
+    auto keys_ex = keygen(ctx);
+    auto public_key_ex = std::get<0>(keys_ex);
+    auto private_key_ex = std::get<1>(keys_ex);
+    std::cout << "AN EXTRA_COMMONER's keypair is generated!" << std::endl;
+
     std::string msg_ref("THIS IS A TEST PLAINTEXT STRING");
     std::cout << "A test string was generated: " << msg_ref << std::endl;
 
@@ -160,6 +165,22 @@ void test_5()
     std::cout << "Encrypted by SUPERVISOR: " << cipher_text_2.Y2 << std::endl;
     auto decrypted_text_2 = super_decrypt(ctx, super_key, cipher_text_2);
     std::cout << "Decrypted by SUPERVISOR: " << decrypted_text_2 << std::endl;
+
+    auto public_key_at = public_key;
+    auto private_key_at = private_key;
+    std::cout << "AN ATTACKER's keypair is based on COMMONER'S one (compromised!)" << std::endl;
+
+    std::string msg_3(msg_ref);
+    auto cipher_text_3 = encrypt(ctx, public_key, msg_3);
+    std::cout << "Encrypted by COMMONER: " << cipher_text_3.Y2 << std::endl;
+    auto decrypted_text_3 = decrypt(ctx, private_key_at, cipher_text_3);
+    std::cout << "Decrypted by COMMONER: " << decrypted_text_3 << std::endl;
+
+    std::string msg_4(msg_ref);
+    auto cipher_text_4 = encrypt(ctx, public_key_ex, msg_4);
+    std::cout << "Encrypted by EXTRA_COMMONER: " << cipher_text_4.Y2 << std::endl;
+    auto decrypted_text_4 = super_decrypt(ctx, private_key_at, cipher_text_4);
+    std::cout << "Decrypted by EXTRA_COMMONER: " << decrypted_text_4 << std::endl;
 
     std::cout << "Finish test #5" << std::endl
               << std::endl;
