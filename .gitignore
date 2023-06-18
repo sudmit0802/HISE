@@ -1,2 +1,5 @@
 build
 bin
+bin/main
+build/CMakeFiles/Makefile.cmake
+build/CMakeFiles/main.dir/src/main.cpp.o

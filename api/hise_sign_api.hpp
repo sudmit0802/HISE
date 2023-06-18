@@ -5,19 +5,20 @@
 #include <vector>
 #include <chrono>
 
-std::pair<Global_Escrow_HISE_PP, G2> setup(void)
+std::tuple<Global_Escrow_HISE_PP, G2, Fr> setup(void)
 {
     srand(time(NULL));
 
     Global_Escrow_HISE_PP pp; // it's like a context for everything
 
+    Fr s;
     G2 esk; // super key for boss (he can use this key for decrypting any message)
-    Global_Escrow_HISE_Setup(pp, esk);
+    Global_Escrow_HISE_Setup(pp, esk, s);
 
-    return std::make_pair(pp, esk);
+    return std::make_tuple(pp, esk, s);
 }
 
-std::pair<G1, G2> keygen(Global_Escrow_HISE_PP &pp)
+std::tuple<G1, G2, Fr> keygen(Global_Escrow_HISE_PP &pp)
 {
 
     Fr sk; // random secret for generating dk
@@ -27,7 +28,7 @@ std::pair<G1, G2> keygen(Global_Escrow_HISE_PP &pp)
     G2 dk; // private key
     Global_Escrow_HISE_Derive(pp, sk, dk);
 
-    return std::make_pair(pk, dk);
+    return std::make_tuple(pk, dk, sk);
 }
 
 Global_Escrow_HISE_CT encrypt(Global_Escrow_HISE_PP &pp, G1 &pk, std::string &message)
