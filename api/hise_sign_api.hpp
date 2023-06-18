@@ -73,7 +73,7 @@ std::string super_decrypt(Global_Escrow_HISE_PP &pp, G2 &esk, Global_Escrow_HISE
     std::vector<std::string> substrings = split(decrypted, ' ');
     std::string tmp_str = substrings.front();
     int number_of_lead_zeroes = 256 - tmp_str.length();
-    std::string zeroes('0', number_of_lead_zeroes);
+    std::string zeroes(number_of_lead_zeroes, '0');
     tmp_str = zeroes+tmp_str;
     std::string ret_str = binaryToAscii(tmp_str);
     return ret_str;

@@ -17,7 +17,7 @@ int main()
     auto cipher_text = encrypt(ctx, public_key, msg);
     auto decrypted_text = decrypt(ctx, private_key, cipher_text);
     
-    std::cout<<decrypted_text<<std::endl;
+    std::cout<<decrypted_text<<std::endl<<std::endl;
 
     return 0;
 }

@@ -12,97 +12,95 @@
 using namespace mcl::bls12;
 
 /* hash a string to a G2 point*/
-void HashToG2(G2& P, const std::string& str)
+void HashToG2(G2 &P, const std::string &str)
 {
 	hashAndMapToG2(P, str.c_str(), str.length());
 }
 
-
 struct DDH_Instance
 {
-	G1 g, X; 
-	GT h, Y; 
+	G1 g, X;
+	GT h, Y;
 };
 
 struct DDH_Witness
 {
-	Fr r; 
+	Fr r;
 };
 
 struct DDH_Proof
 {
 	G1 A1;
 	GT A2;
-	Fr z; 
+	Fr z;
 };
 
 /* generate a proof */
 void NIZK_Prove(DDH_Instance &instance, DDH_Witness &witness, std::string &transcript_str, DDH_Proof &proof)
 {
-	Fr a; 
-	a.setRand(); 
-	G1::mul(proof.A1, instance.g, a); 
-	GT::pow(proof.A2, instance.h, a); 
-	
-	transcript_str += proof.A1.getStr();
-	transcript_str += proof.A2.getStr(); 
-	Fr e; 
-	e.setHashOf(transcript_str.c_str(), transcript_str.length());  
+	Fr a;
+	a.setRand();
+	G1::mul(proof.A1, instance.g, a);
+	GT::pow(proof.A2, instance.h, a);
 
-	Fr::mul(proof.z, e, witness.r); 
+	transcript_str += proof.A1.getStr();
+	transcript_str += proof.A2.getStr();
+	Fr e;
+	e.setHashOf(transcript_str.c_str(), transcript_str.length());
+
+	Fr::mul(proof.z, e, witness.r);
 	Fr::add(proof.z, a, proof.z); // z = a + er
 }
 
 bool NIZK_Verify(DDH_Instance &instance, std::string &transcript_str, DDH_Proof &proof)
-{	
+{
 	transcript_str += proof.A1.getStr();
-	transcript_str += proof.A2.getStr(); 
-	Fr e; 	
+	transcript_str += proof.A2.getStr();
+	Fr e;
 	e.setHashOf(transcript_str.c_str(), transcript_str.length());
 
-	// check the first equation 
+	// check the first equation
 	G1 LEFT1;
-	G1::mul(LEFT1, instance.g, proof.z); 
+	G1::mul(LEFT1, instance.g, proof.z);
 
-	G1 RIGHT1; 
-	G1::mul(RIGHT1, instance.X, e); 
-	G1::add(RIGHT1, RIGHT1, proof.A1); 
-
+	G1 RIGHT1;
+	G1::mul(RIGHT1, instance.X, e);
+	G1::add(RIGHT1, RIGHT1, proof.A1);
 
 	// check the second equation
-	GT LEFT2; 
-	GT::pow(LEFT2, instance.h, proof.z); 
+	GT LEFT2;
+	GT::pow(LEFT2, instance.h, proof.z);
 
-	GT RIGHT2; 
-	GT::pow(RIGHT2, instance.Y, e); 
-	GT::mul(RIGHT2, RIGHT2, proof.A2); 
+	GT RIGHT2;
+	GT::pow(RIGHT2, instance.Y, e);
+	GT::mul(RIGHT2, RIGHT2, proof.A2);
 
-	#ifdef LOG
-		std::cout << "LEFT1 = " << LEFT1 << std::endl; 
-		std::cout << "RIGHT1 = " << RIGHT1 << std::endl; 
-		std::cout << "LEFT2 = " << LEFT2 << std::endl; 
-		std::cout << "RIGHT2 = " << RIGHT2 << std::endl; 
-	#endif
+#ifdef LOG
+	std::cout << "LEFT1 = " << LEFT1 << std::endl;
+	std::cout << "RIGHT1 = " << RIGHT1 << std::endl;
+	std::cout << "LEFT2 = " << LEFT2 << std::endl;
+	std::cout << "RIGHT2 = " << RIGHT2 << std::endl;
+#endif
 
-	bool V1 = (LEFT1 == RIGHT1); 
+	bool V1 = (LEFT1 == RIGHT1);
 	bool V2 = (LEFT2 == RIGHT2);
-	bool Validity = V1 && V2; 	
+	bool Validity = V1 && V2;
 
-    #ifdef DEBUG
-    Print_SplitLine('-'); 
-    std::cout << "verify the NIZKPoK for DDH >>>" << std::endl; 
-    std::cout << std::boolalpha << "Condition 1 (DDH proof) = " << V1 << std::endl; 
-    std::cout << std::boolalpha << "Condition 2 (DDH proof) = " << V2 << std::endl; 
-    #endif
+#ifdef DEBUG
+	Print_SplitLine('-');
+	std::cout << "verify the NIZKPoK for DDH >>>" << std::endl;
+	std::cout << std::boolalpha << "Condition 1 (DDH proof) = " << V1 << std::endl;
+	std::cout << std::boolalpha << "Condition 2 (DDH proof) = " << V2 << std::endl;
+#endif
 
-	return Validity; 
+	return Validity;
 }
 
 struct Global_Escrow_HISE_PP
 {
-	G1 g1; 
-	G2 g2; 
-	G1 epk; 
+	G1 g1;
+	G2 g2;
+	G1 epk;
 	std::string id; // id^*
 };
 
@@ -110,289 +108,304 @@ struct Global_Escrow_HISE_CT
 {
 	G1 receiver_pk;
 
-	G1 X; 
+	G1 X;
 	GT Y1;
-	GT Y2; // raw ciphertext 
-	G1 A1; 
-	GT A2; 
-	Fr z;  // consistency proof
+	GT Y2; // raw ciphertext
+	G1 A1;
+	GT A2;
+	Fr z; // consistency proof
 };
 
-
-std::string decimalToBinary(int num, int leadZero) {
-    std::stack<std::string> binaryStack;
-    while (num!=0) {
-        binaryStack.push(std::to_string(num%2));
-        num/=2;
-    }
+std::string decimalToBinary(int num, int leadZero)
+{
+	std::stack<std::string> binaryStack;
+	while (num != 0)
+	{
+		binaryStack.push(std::to_string(num % 2));
+		num /= 2;
+	}
 	std::string returnVal = "";
-    int loop = binaryStack.size();
+	int loop = binaryStack.size();
 
-    if (leadZero>0) {
-        for (int i = 0; i < leadZero-loop; i++) {
-            returnVal+="0";
-        }
-    }
+	if (leadZero > 0)
+	{
+		for (int i = 0; i < leadZero - loop; i++)
+		{
+			returnVal += "0";
+		}
+	}
 
-    for (int i = 0; i < loop; i++) {
-        returnVal+=binaryStack.top();
-        binaryStack.pop();
-    }
-    return returnVal;
+	for (int i = 0; i < loop; i++)
+	{
+		returnVal += binaryStack.top();
+		binaryStack.pop();
+	}
+	return returnVal;
 }
 
-std::string asciiToBinary(std::string &str) {
-    std::string returnVal = "";
-    for (int i = 0; i < str.length(); i++) {
-        int charCode = int(str[i]);
-        returnVal+=decimalToBinary(charCode, 8);
-    }
-    return returnVal;
+std::string asciiToBinary(std::string &str)
+{
+	std::string returnVal = "";
+	for (int i = 0; i < str.length(); i++)
+	{
+		int charCode = int(str[i]);
+		returnVal += decimalToBinary(charCode, 8);
+	}
+	return returnVal;
 }
 
-int binaryToDecimal(std::string &str) {
-    int charCode = 0;
-    int val = pow(2, str.length()-1);
-    for (int j = 0; j < str.length(); j++) {
-        charCode+=(val*(str[j]-'0'));
-        val/=2;
-    }
-    return charCode;
+int binaryToDecimal(std::string &str)
+{
+	int charCode = 0;
+	int val = pow(2, str.length() - 1);
+	for (int j = 0; j < str.length(); j++)
+	{
+		charCode += (val * (str[j] - '0'));
+		val /= 2;
+	}
+	return charCode;
 }
 
-std::string binaryToAscii(std::string &str) {    
-    std::string returnVal = "";
+std::string binaryToAscii(std::string &str)
+{
+	std::string returnVal = "";
 
-    if (str.length()<8) {
-        return "Insufficient characters";
-    }
-    for (int i = 0; i < str.length(); i++) {
-        if (str[i]!='0'&&str[i]!='1') {
-            return "Invalid character(s)"; 
-        }
-    }
+	if (str.length() < 8)
+	{
+		return "Insufficient characters";
+	}
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (str[i] != '0' && str[i] != '1')
+		{
+			return "Invalid character(s)";
+		}
+	}
 
-    std::string tmp = "";
-    for (int i = 0; i < str.length()/8; i++) {
-		std::string arg_str = str.substr(8*i, 8);
+	std::string tmp = "";
+	for (int i = 0; i < str.length() / 8; i++)
+	{
+		std::string arg_str = str.substr(8 * i, 8);
 		char character = binaryToDecimal(arg_str);
-        if (character>126||character<32) {
-            continue;
-        }
-        tmp+=character;
-    }
-    returnVal+=tmp;
-    
-    return returnVal;
+		if (character > 126 || character < 32)
+		{
+			continue;
+		}
+		tmp += character;
+	}
+	returnVal += tmp;
+
+	return returnVal;
 }
 
-std::vector<std::string> split(const std::string& str, char delimiter) {
-    std::vector<std::string> tokens;
-    std::istringstream iss(str);
-    std::string token;
+std::vector<std::string> split(const std::string &str, char delimiter)
+{
+	std::vector<std::string> tokens;
+	std::istringstream iss(str);
+	std::string token;
 
-    while (std::getline(iss, token, delimiter)) {
-        tokens.push_back(token);
-    }
+	while (std::getline(iss, token, delimiter))
+	{
+		tokens.push_back(token);
+	}
 
-    return tokens;
+	return tokens;
 }
 
-void Global_Escrow_HISE_Setup(Global_Escrow_HISE_PP& pp, G2& esk)
+void Global_Escrow_HISE_Setup(Global_Escrow_HISE_PP &pp, G2 &esk)
 {
 	// setup pairing
-    initPairing();
+	initPairing();
 	// pick two random generators
 	mapToG1(pp.g1, rand());
-	mapToG2(pp.g2, rand()); 
+	mapToG2(pp.g2, rand());
 
 	pp.id.assign(33, '1'); // set id^* = 1^33
 
-	Fr s; 
-	s.setRand(); 
+	Fr s;
+	s.setRand();
 	G1::mul(pp.epk, pp.g1, s); // epk = g1^s
 
-	G2 hash_id; 
+	G2 hash_id;
 	HashToG2(hash_id, pp.id);
 	G2::mul(esk, hash_id, s); // esk = hash_id^s
 
-	#ifdef LOG 
-		std::cout << "pp.g1 = " << pp.g1 << std::endl;
-		std::cout << "pp.g2 = " << pp.g2 << std::endl;
-		std::cout << "pp.epk = " << pp.epk << std::endl; 
-		std::cout << "pp.id = " << pp.id << std::endl; 
-		std::cout << "esk = " << esk << std::endl; 
-	#endif
+#ifdef LOG
+	std::cout << "pp.g1 = " << pp.g1 << std::endl;
+	std::cout << "pp.g2 = " << pp.g2 << std::endl;
+	std::cout << "pp.epk = " << pp.epk << std::endl;
+	std::cout << "pp.id = " << pp.id << std::endl;
+	std::cout << "esk = " << esk << std::endl;
+#endif
 }
 
-
-void Global_Escrow_HISE_KeyGen(const Global_Escrow_HISE_PP& pp, G1& pk, Fr& sk)
+void Global_Escrow_HISE_KeyGen(const Global_Escrow_HISE_PP &pp, G1 &pk, Fr &sk)
 {
-	sk.setRand(); 
+	sk.setRand();
 	G1::mul(pk, pp.g1, sk); // pk = g1^sk
 
-	#ifdef LOG 
-		std::cout << "pk = " << pk << std::endl;
-		std::cout << "sk = " << sk << std::endl;
-	#endif
+#ifdef LOG
+	std::cout << "pk = " << pk << std::endl;
+	std::cout << "sk = " << sk << std::endl;
+#endif
 }
 
-
-void Global_Escrow_HISE_Derive(const Global_Escrow_HISE_PP& pp, const Fr& sk, G2& dk)
+void Global_Escrow_HISE_Derive(const Global_Escrow_HISE_PP &pp, const Fr &sk, G2 &dk)
 {
-	G2 hash_id; 
+	G2 hash_id;
 	HashToG2(hash_id, pp.id);
 	G2::mul(dk, hash_id, sk); // dk = hash_id^sk
 }
 
-void Global_Escrow_HISE_Encrypt(const Global_Escrow_HISE_PP& pp, const G1& pk, const GT& pt, Global_Escrow_HISE_CT& ct)
-{	
-	ct.receiver_pk = pk; 
+void Global_Escrow_HISE_Encrypt(const Global_Escrow_HISE_PP &pp, const G1 &pk, const GT &pt, Global_Escrow_HISE_CT &ct)
+{
+	ct.receiver_pk = pk;
 
-	Fr r; 
-	r.setRand(); 
+	Fr r;
+	r.setRand();
 	G1::mul(ct.X, pp.g1, r); // X = g1^r
-	G2 hash_id; 
+	G2 hash_id;
 	HashToG2(hash_id, pp.id);
 
-	GT h, h1, h2; 
-	pairing(h1, pk, hash_id); // h1 = e(pk, H(id))
-	pairing(h2, pp.epk, hash_id); // h2 = e(epk, H(id)) 
+	GT h, h1, h2;
+	pairing(h1, pk, hash_id);	  // h1 = e(pk, H(id))
+	pairing(h2, pp.epk, hash_id); // h2 = e(epk, H(id))
 
-	GT k1, k2; 
-	GT::pow(k1, h1, r); // k1 = h1^r 
-	GT::pow(k2, h2, r); // k2 = h2^r 
+	GT k1, k2;
+	GT::pow(k1, h1, r); // k1 = h1^r
+	GT::pow(k2, h2, r); // k2 = h2^r
 
-	GT::mul(ct.Y1, k1, pt);       // Y1 = k1 \cdot m
-	GT::mul(ct.Y2, k2, pt);       // Y2 = k2 \cdot m
-	DDH_Instance instance; 
-	instance.g = pp.g1; 
-	instance.X = ct.X; 
-	GT::div(instance.h, h1, h2); 
-	GT::div(instance.Y, ct.Y1, ct.Y2); 
+	GT::mul(ct.Y1, k1, pt); // Y1 = k1 \cdot m
+	GT::mul(ct.Y2, k2, pt); // Y2 = k2 \cdot m
+	DDH_Instance instance;
+	instance.g = pp.g1;
+	instance.X = ct.X;
+	GT::div(instance.h, h1, h2);
+	GT::div(instance.Y, ct.Y1, ct.Y2);
 
-	DDH_Witness witness; 
-	witness.r = r; 
+	DDH_Witness witness;
+	witness.r = r;
 
 	DDH_Proof proof;
 
-	std::string transcript_str = ""; 
-	NIZK_Prove(instance, witness, transcript_str, proof); 
+	std::string transcript_str = "";
+	NIZK_Prove(instance, witness, transcript_str, proof);
 
-	ct.A1 = proof.A1; 
+	ct.A1 = proof.A1;
 	ct.A2 = proof.A2;
-	ct.z  = proof.z; 
+	ct.z = proof.z;
 
-	#ifdef LOG 
-		std::cout << "pt = " << pt << std::endl;
-		std::cout << "ct.X = " << ct.X << std::endl;
-		std::cout << "ct.Y1 = " << ct.Y1 << std::endl;
-		std::cout << "ct.Y2 = " << ct.Y2 << std::endl;
-		std::cout << "ct.A1 = " << ct.A1 << std::endl;
-		std::cout << "ct.A2 = " << ct.A2 << std::endl;
-		std::cout << "ct.z = " << ct.z << std::endl;
-	#endif 
+#ifdef LOG
+	std::cout << "pt = " << pt << std::endl;
+	std::cout << "ct.X = " << ct.X << std::endl;
+	std::cout << "ct.Y1 = " << ct.Y1 << std::endl;
+	std::cout << "ct.Y2 = " << ct.Y2 << std::endl;
+	std::cout << "ct.A1 = " << ct.A1 << std::endl;
+	std::cout << "ct.A2 = " << ct.A2 << std::endl;
+	std::cout << "ct.z = " << ct.z << std::endl;
+#endif
 }
 
-void Global_Escrow_HISE_Decrypt(Global_Escrow_HISE_PP& pp, G2& dk, Global_Escrow_HISE_CT& ct, GT& pt)
+void Global_Escrow_HISE_Decrypt(Global_Escrow_HISE_PP &pp, G2 &dk, Global_Escrow_HISE_CT &ct, GT &pt)
 {
-	G2 hash_id; 
+	G2 hash_id;
 	HashToG2(hash_id, pp.id);
-	
-	DDH_Instance instance; 
-	instance.g = pp.g1; 
-	instance.X = ct.X; 
-	GT h1, h2; 
+
+	DDH_Instance instance;
+	instance.g = pp.g1;
+	instance.X = ct.X;
+	GT h1, h2;
 	pairing(h1, ct.receiver_pk, hash_id); // h1 = e(pk, H(id))
-	pairing(h2, pp.epk, hash_id); // h2 = e(epk, H(id)) 
-	GT::div(instance.h, h1, h2); 
-	GT::div(instance.Y, ct.Y1, ct.Y2); 
+	pairing(h2, pp.epk, hash_id);		  // h2 = e(epk, H(id))
+	GT::div(instance.h, h1, h2);
+	GT::div(instance.Y, ct.Y1, ct.Y2);
 
-	std::string transcript_str; 
+	std::string transcript_str;
 
-	DDH_Proof proof; 
+	DDH_Proof proof;
 	proof.A1 = ct.A1;
-	proof.A2 = ct.A2; 
-	proof.z  = ct.z; 
+	proof.A2 = ct.A2;
+	proof.z = ct.z;
 
-
-	if (NIZK_Verify(instance, transcript_str, proof) == false){
-		std::cout << "ciphertext is invalid" << std::endl; 
+	if (NIZK_Verify(instance, transcript_str, proof) == false)
+	{
+		std::cout << "ciphertext is invalid" << std::endl;
 	}
 
-	else{
-		GT k; 	
-		pairing(k, ct.X, dk); // k = e(X, dk)
+	else
+	{
+		GT k;
+		pairing(k, ct.X, dk);  // k = e(X, dk)
 		GT::div(pt, ct.Y1, k); // m = Y/k
-	
-		#ifdef LOG
-			std::cout << "pt = " << pt << std::endl; 
-		#endif
+
+#ifdef LOG
+		std::cout << "pt = " << pt << std::endl;
+#endif
 	}
 }
 
-void Global_Escrow_HISE_Escrow_Decrypt(Global_Escrow_HISE_PP& pp, G2& esk, Global_Escrow_HISE_CT& ct, GT& pt)
+void Global_Escrow_HISE_Escrow_Decrypt(Global_Escrow_HISE_PP &pp, G2 &esk, Global_Escrow_HISE_CT &ct, GT &pt)
 {
-	G2 hash_id; 
+	G2 hash_id;
 	HashToG2(hash_id, pp.id);
-	
-	DDH_Instance instance; 
-	instance.g = pp.g1; 
-	instance.X = ct.X; 
-	GT h1, h2; 
+
+	DDH_Instance instance;
+	instance.g = pp.g1;
+	instance.X = ct.X;
+	GT h1, h2;
 	pairing(h1, ct.receiver_pk, hash_id); // h1 = e(pk, H(id))
-	pairing(h2, pp.epk, hash_id); // h2 = e(epk, H(id)) 
-	GT::div(instance.h, h1, h2); 
-	GT::div(instance.Y, ct.Y1, ct.Y2); 
+	pairing(h2, pp.epk, hash_id);		  // h2 = e(epk, H(id))
+	GT::div(instance.h, h1, h2);
+	GT::div(instance.Y, ct.Y1, ct.Y2);
 
-	std::string transcript_str; 
+	std::string transcript_str;
 
-	DDH_Proof proof; 
+	DDH_Proof proof;
 	proof.A1 = ct.A1;
-	proof.A2 = ct.A2; 
-	proof.z  = ct.z; 
+	proof.A2 = ct.A2;
+	proof.z = ct.z;
 
-
-	if (NIZK_Verify(instance, transcript_str, proof) == false){
-		std::cout << "ciphertext is invalid" << std::endl; 
+	if (NIZK_Verify(instance, transcript_str, proof) == false)
+	{
+		std::cout << "ciphertext is invalid" << std::endl;
 	}
 
-	else{
-		GT k; 	
+	else
+	{
+		GT k;
 		pairing(k, ct.X, esk); // k = e(X, dk)
 		GT::div(pt, ct.Y2, k); // m = Y/k
-	
-		#ifdef LOG 
-			std::cout << "pt = " << pt << std::endl; 
-		#endif
+
+#ifdef LOG
+		std::cout << "pt = " << pt << std::endl;
+#endif
 	}
 }
 
-void Global_Escrow_HISE_Sign(const Fr& sk, const std::string& msg, G2& sig)
+void Global_Escrow_HISE_Sign(const Fr &sk, const std::string &msg, G2 &sig)
 {
-	G2 hash_msg; 
-	HashToG2(hash_msg, '0' + msg);  // hash_msg = H(0|m)
-	G2::mul(sig, hash_msg, sk); // sig = hash_msg^sk
+	G2 hash_msg;
+	HashToG2(hash_msg, '0' + msg); // hash_msg = H(0|m)
+	G2::mul(sig, hash_msg, sk);	   // sig = hash_msg^sk
 }
 
-bool Global_Escrow_HISE_Verify(const Global_Escrow_HISE_PP& pp, const G1& pk, const std::string& msg, G2& sig)
+bool Global_Escrow_HISE_Verify(const Global_Escrow_HISE_PP &pp, const G1 &pk, const std::string &msg, G2 &sig)
 {
-	Fp12 LEFT, RIGHT; 
-	G2 hash_msg; 
+	Fp12 LEFT, RIGHT;
+	G2 hash_msg;
 	HashToG2(hash_msg, '0' + msg);
 
-	pairing(LEFT, pk, hash_msg); 
-	pairing(RIGHT, pp.g1, sig); 
+	pairing(LEFT, pk, hash_msg);
+	pairing(RIGHT, pp.g1, sig);
 
-		
-	if (LEFT == RIGHT){
-		return true; 
+	if (LEFT == RIGHT)
+	{
+		return true;
 	}
-	else{
-		return false; 
+	else
+	{
+		return false;
 	}
-	
 }
 
 #endif
-
